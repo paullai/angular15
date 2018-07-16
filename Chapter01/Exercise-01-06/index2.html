@@ -5,17 +5,28 @@
   <link href="./lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid"
+      ng-controller="diveLogCtrl">
     <h1>My Latest Dives (ng-contoller)</h1>
     <div class="row">
+      <div class="col-sm-5">
+        <button class="btn btn-primary btn-lg"
+          ng-click="addDrive()"
+          ng-disabled="!enableAdd()">
+          add new dive
+        </button>
+        <button class="btn btn-danger btn-lg"
+          ng-click="clearDives()">
+          clear dives
+        </button>
+      </div>
       <div class="col-sm-4 col-sm-offset-8">
         <input class="form-control input-lg"
           placeholder="Search" 
           ng-model="searchKey" />
       </div>
     </div>
-    <div class="row"
-      ng-controller="diveLogCtrl">
+    <div class="row">
       <div class="col-sm-4"
         ng-repeat="dive in dives | filter:{site:searchKey}">
         <!--filter:{name: search.name, phone: search.phone}-->
@@ -33,7 +44,23 @@
       .controller('diveLogCtrl', DiveLogCtrl);
 
     function DiveLogCtrl($scope) {
-      $scope.dives = dives;
+        var index = 0;
+        $scope.dives = [];
+
+        $scope.addDrive = function () {
+            if ($scope.enableAdd()) {
+                $scope.dives.push(dives[index++]);
+            }
+        }
+        $scope.clearDives = function () {
+            console.log("scope.clearDives")
+            $scope.dives = [];
+            index = 0;
+        }
+        $scope.enableAdd = function () {
+            console.log(index, dives.length);
+            return index < dives.length;
+        }
     }
   </script>
 </body>

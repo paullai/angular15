@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-sm-5">
         <button class="btn btn-primary btn-lg"
-          ng-click="addDive()"
+          ng-click="addDrive()"
           ng-disabled="!enableAdd()">
           Add new dive
         </button>
@@ -45,7 +45,7 @@
       var index = 0;
       $scope.dives = [];
 
-      $scope.addDive = function () {
+    $scope.addDrive = function () {
         if ($scope.enableAdd()) {
           $scope.dives.push(dives[index++]);
         }
@@ -54,9 +54,8 @@
       $scope.clearDives = function () {
         $scope.dives = [];
         index = 0;
-      }
-
-      $scope.enableAdd = function () {
+    }
+    $scope.enableAdd = function () {
         return index < dives.length;
       }
     }
