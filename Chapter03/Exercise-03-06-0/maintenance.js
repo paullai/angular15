@@ -4,7 +4,8 @@
   .controller('locationsCtrl', LocationsCtrl)
   .controller('sitesCtrl', SitesCtrl)
   .factory('currentSpot', currentSpot)
-    .directive('ywActiveMenu',ywActiveXYZ)
+  .directive('ywActiveMenu', ywActiveMenu)
+  .directive('ywActiveID', ywActiveID222)
   .config(function ($routeProvider) {
     $routeProvider.when('/locations', {
       templateUrl: 'views/locations.html',
@@ -52,24 +53,48 @@ function currentSpot() {
 }
 
 function MainCtrl() {
-
 }
 
 function LocationsCtrl() {
-
 }
 
 function SitesCtrl() {
-
 }
-function ywActiveXYZ(currentSpot) {
-    return function (scope, element, attrs) {
-        var activeMenuId = attrs["ywActiveMenu"];
-        var activeTitle = attrs["ywActiveTitle"];
-        console.log('activeMenuId:' + activeMenuId);
-        console.log('activeTitle:' + activeTitle);
-        console.log('abc:' + attrs["abc"]);
 
-        currentSpot.setCurrentSpot(activeMenuId, activeTitle);
+function ywActiveMenu(currentSpot) {
+  return function (scope, element, attrs) {
+    var activeMenuId = attrs["ywActiveMenu"];
+    var activeTitle = attrs["ywActiveTitle"];
+    currentSpot.setCurrentSpot(activeMenuId, activeTitle);
+  }
+}
+
+
+function ywActiveID222(currentSpot) {
+    var menuElements = [];
+
+    function setActive(element, menuId) {
+        if (currentSpot.getActiveMenu() == menuId) {
+            element.addClass('active');
+        } else {
+            element.removeClass('active');
+        }
+    }
+
+    return function (scope, element, attrs) {
+        var menuId = attrs["ywMenuId"];
+        setActive(element,menuId);
+        //
+        // menuElements.push({ id: menuId, node: element });
+        //
+        // var watcherFn = function (watchScope) {
+        //     return watchScope.$eval('getActiveMenu()');
+        // }
+        // scope.$watch(watcherFn, function (newValue, oldValue) {
+        //     for (var i = 0; i < menuElements.length; i++) {
+        //         var menuElement = menuElements[i];
+        //         setActive(menuElement.node, menuElement.id);
+        //     }
+        // });
     }
 }
