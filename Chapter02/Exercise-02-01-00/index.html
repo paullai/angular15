@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html ng-app="diveLog">
+<html ng-app="maintenance">
 <head>
   <title>Dive Log (ng-controller)</title>
   <link href="./lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
 </head>
+<style>
+  .oddRow {
+    background-color: #dddddd;
+  }
+</style>
 <body>
-  <div class="container-fluid"
-      ng-controller="diveLogCtrl">
+  <div class="container-fluid" ng-controller="siteEditCtrl">
     <h1>My Latest Dives (ng-contoller)</h1>
     <div class="row">
-      <div class="col-sm-5">
-        <button class="btn btn-primary btn-lg"
-          ng-click="addDrive()"
-          ng-disabled="!enableAdd()">
+      <div class="col-sm-12">
+        <button class="btn btn-primary btn-lg" >
+
           Add new dive
-        </button>
-        <button class="btn btn-danger btn-lg"
-          ng-click="clearDives()">
-          Clear dives
         </button>
       </div>
       <div class="col-sm-4 col-sm-offset-3">
@@ -26,24 +25,28 @@
           ng-model="searchKey" />
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-4"
-        ng-repeat="dive in dives | filter:searchKey">
-        <h3>{{dive.site}}</h3>
-        <h4>{{dive.location}}</h4>
-        <h2>{{dive.depth}} feet | {{dive.time}} min</h2>
+    <div class="row" ng-repeat="site in sites"
+         ng-class="{oddRow:$index%2==0}" >
+          <div class ="col-sml-8">
+            <h4>{{$index+1}}:{{site}} </h4>
+          </div>
+          <div class ="col-sml-4" style=""margin-top:5px;">
+              <div class="pull-right">
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </div>
+          </div>
       </div>
     </div>
   </div>
   <script src="./lib/angular/angular.min.js"></script>
-  <script src="dives.js"></script>
+  <script src="sites.js"></script>
   <script>
-    angular.module('diveLog', [])
-      .controller('diveLogCtrl', DiveLogCtrl);
+    angular.module('maintenance', [])
+      .controller('siteEditCtrl', SiteEditCtrl);
 
-    function DiveLogCtrl($scope) {
-      var index = 0;
-      $scope.dives = [];
+    function SiteEditCtrl($scope) {
+      $scope.sites = sites;
 
     $scope.addDrive = function () {
         if ($scope.enableAdd()) {
