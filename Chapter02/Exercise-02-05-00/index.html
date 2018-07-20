@@ -31,16 +31,17 @@
           <div class="pull-right">
             <button class="btn btn-warning btn-sm"
               ng-click="startEdit($index)">
-              Edit
+              Edit  {{$index}}
             </button>
-            <button class="btn btn-danger btn-sm">
+            <button class="btn btn-danger btn-sm"
+              ng-click="startRemove($index)">
               Delete
             </button>
           </div>
         </div>
       </div>
     </div>
-    
+
     <div ng-show="view=='add'">
       <h3>Specify the name of the dive site:</h3>
       <div class="row">
@@ -64,13 +65,13 @@
         </div>
       </div>
     </div>
-
+  
     <div ng-show="view=='edit'">
       <h3>Edit the name of the dive site:</h3>
       <div class="row">
         <div class="col-sm-6">
-          <input class="form-control input-lg" type="text"
-            placeholder="site name"
+          <input class="form-control input-lg" type="text" 
+            placeholder="site name" 
             ng-model="siteBox" />
         </div>
       </div>
@@ -89,6 +90,30 @@
       </div>
     </div>
 
+    <div ng-show="view=='delete'">
+      <h3>Confirm delete</h3>
+      <div class="row">
+        <div class="col-sm-8">
+          <p>
+            Are you sure you want to delete dive
+            site '{{getSelected()}}'?
+          </p>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 12px;">
+        <div class="col-sm-6">
+          <button class="btn btn-success btn"
+                  ng-click="cancel()">
+            No
+          </button>
+          <button class="btn btn-danger btn"
+                  ng-click="remove()">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="./lib/angular/angular.min.js"></script>
@@ -102,10 +127,26 @@
       $scope.startAdd = startAdd;
       $scope.cancel = cancel;
       $scope.add = add;
-      $scope.startEdit=startEdit;
-      $scope.save=save;
+      $scope.startEdit = startEdit;
+      $scope.save = save;
+
+       $scope.startRemove=startRemove;
+      $scope.remove=remove;
+      $scope.getSelected=getSelected;
+
+      var selected = -1;
 
       setView('list');
+
+
+      $scope.init2 = function () {
+          console.log("hello world 2");
+      }();
+
+      $scope.init = function () {
+          console.log("hello world");
+      };
+      $scope.init();
 
       function setView(view) {
         $scope.view = view;
@@ -124,18 +165,33 @@
         $scope.sites.push($scope.siteBox);
         setView('list');
       }
-      function startEdit(index){
+
+      function startEdit(index) {
+        selected = index;
+        console.log(index);
+        $scope.siteBox = $scope.sites[index];
+        setView('edit');
+      }
+
+      function save() {
+        $scope.sites[selected] = $scope.siteBox;
+        setView('list');
+      }
+
+        function startRemove(index) {
           selected=index;
-          $scope.siteBox=$scope.sites[index];
-          setView('edit');
-      }
-      function save(){
-          $scope.sites[selected]=$scope.siteBox;
+          setView('delete');
+        }
+        function remove() {
+          $scope.sites.splice(selected,1);
           setView('list');
-      }
+        }
+        function getSelected() {
+          return sites[selected];
+        }
+
 
     }
-
   </script>
 </body>
 </html>
